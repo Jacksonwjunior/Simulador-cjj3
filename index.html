@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulador CJJ Consórcios</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0f0f0f;
+      color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background-color: #1c1c1c;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ff7f;
+      margin-bottom: 10px;
+    }
+
+    p {
+      text-align: center;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #555;
+      margin-bottom: 20px;
+      background-color: #2a2a2a;
+      color: #fff;
+    }
+
+    button {
+      width: 100%;
+      background-color: #ffa500;
+      color: #000;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #simulador, #resultado {
+      display: none;
+      margin-top: 20px;
+    }
+
+    #resultado {
+      background-color: #2e7d32;
+      padding: 15px;
+      border-radius: 10px;
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    .whatsapp-button {
+      display: none;
+      margin-top: 20px;
+      background-color: #25D366;
+      color: white;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CJJ Consórcios</h1>
+    <p>Simulador Estratégico de Contemplação</p>
+
+    <label>Nome completo:</label>
+    <input type="text" id="nome" placeholder="Digite seu nome" required>
+
+    <label>Telefone com DDD:</label>
+    <input type="text" id="telefone" placeholder="(DDD) 91234-5678" required>
+
+    <label>Valor do crédito desejado:</label>
+    <input type="number" id="credito" placeholder="Ex: 150000" required>
+
+    <label>Melhor horário para contato:</label>
+    <input type="text" id="horario" placeholder="Manhã, tarde ou horário específico" required>
+
+    <button onclick="liberarSimulador()">Iniciar Simulação</button>
+
+    <div id="simulador">
+      <label>Número médio de contemplações mensais (Cm):</label>
+      <input type="number" id="cm" placeholder="Ex: 14">
+
+      <label>Número de tipos de lance (T):</label>
+      <input type="number" id="t" value="3" readonly>
+
+      <label>Número de lances mensais por tipo de lance (Lm):</label>
+      <input type="number" id="lm" placeholder="Ex: 200">
+
+      <button onclick="calcular()">Calcular</button>
+
+      <div id="resultado"></div>
+      <a id="whatsapp" class="whatsapp-button" target="_blank">
+        👉 Falar com Jackson no WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function liberarSimulador() {
+      const nome = document.getElementById("nome").value.trim();
+      const telefone = document.getElementById("telefone").value.trim();
+      const horario = document.getElementById("horario").value.trim();
+      const credito = document.getElementById("credito").value.trim();
+
+      if (!nome || !telefone || !horario || !credito) {
+        alert("Por favor, preencha todos os campos obrigatórios.");
+        return;
+      }
+
+      document.getElementById("simulador").style.display = "block";
+    }
+
+    function calcular() {
+      let cm = parseFloat(document.getElementById("cm").value);
+      let t = parseFloat(document.getElementById("t").value);
+      let lm = parseFloat(document.getElementById("lm").value);
+
+      if (!cm || !t || !lm) {
+        document.getElementById("resultado").style.display = "block";
+        document.getElementById("resultado").innerHTML = "Preencha todos os campos da simulação.";
+        return;
+      }
+
+      let pm = cm / t;
+      let pcont = pm / lm;
+      let tcont = 1 / pcont;
+
+      document.getElementById("resultado").style.display = "block";
+      document.getElementById("resultado").innerHTML =
+        "<strong>Probabilidade mensal de contemplação:</strong> " + (pcont * 100).toFixed(2) + "%<br>" +
+        "<strong>Tempo estimado de contemplação:</strong> " + tcont.toFixed(1) + " meses";
+
+      const nome = document.getElementById("nome").value.trim();
+      const telefone = document.getElementById("telefone").value.trim();
+      const horario = document.getElementById("horario").value.trim();
+      const credito = document.getElementById("credito").value.trim();
+
+      const msg = `Olá Jackson, me chamo ${nome}. Meu telefone é ${telefone}, desejo um crédito de R$${credito} e posso falar no horário: ${horario}. Acabei de simular minha contemplação.`;
+
+      const url = "https://wa.me/55SEUNUMERO?text=" + encodeURIComponent(msg);
+      const btn = document.getElementById("whatsapp");
+      btn.href = url;
+      btn.style.display = "block";
+    }
+  </script>
+</body>
+</html>
